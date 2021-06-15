@@ -1,0 +1,16 @@
+.elements{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media screen and (min-width: 768px){
+  .elements{
+    grid-template-columns: 282px 282px;
+    justify-content: center;
+  }
+}
+@media screen and (min-width: 1024px){
+  .elements{
+    grid-template-columns: 282px 282px 282px;
+  }
+}

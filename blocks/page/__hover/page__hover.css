@@ -1,0 +1,6 @@
+.page__hover{
+  transition: opacity 0.5s;
+}
+.page__hover:hover{
+  opacity: 0.6;
+}
