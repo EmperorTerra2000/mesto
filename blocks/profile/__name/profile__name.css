@@ -6,9 +6,14 @@
   text-align: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 @media screen and (min-width: 768px){
-  .profile__name{  
+  .profile__name{
+    max-width: 350px;
     text-align: left;
     font-size: 42px;
     line-height: 48px;

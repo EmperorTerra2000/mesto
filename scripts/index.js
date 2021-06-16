@@ -1,9 +1,9 @@
 const popupElement = document.querySelector('.popup');
+const formElement = popupElement.querySelector('.popup__content');
 const popupClose = popupElement.querySelector('.popup__close');
-const popupName = popupElement.querySelector('.popup__name');
-const popupDuty = popupElement.querySelector('.popup__duty');
-const popupSave = popupElement.querySelector('.popup__btn-save');
 const popupOpen = document.querySelector('.profile__edit-btn');
+const popupName = popupElement.querySelector('.popup__input_value_name');
+const popupDuty = popupElement.querySelector('.popup__input_value_duty');
 const profileName = document.querySelector('.profile__name');
 const profileDuty = document.querySelector('.profile__duty');
 
@@ -12,21 +12,18 @@ function closePopup(){
 }
 
 function openPopup(){
+  popupName.value = profileName.textContent;
+  popupDuty.value = profileDuty.textContent;
   popupElement.classList.add('popup_active');
 }
 
-function saveChangePopup(){
+function formSubmitHandler(evt){
+  evt.preventDefault(); //отмена стандартной отправки формы
   profileName.textContent = popupName.value;
   profileDuty.textContent = popupDuty.value;
   closePopup();
 }
 
-function closePopupElement(event){
-  if( event.target !== event.currentTarget) return;
-  closePopup();
-}
-
 popupClose.addEventListener('click', closePopup);
 popupOpen.addEventListener('click', openPopup);
-popupSave.addEventListener('click', saveChangePopup);
-popupElement.addEventListener('click', closePopupElement);
+formElement.addEventListener('submit', formSubmitHandler);
