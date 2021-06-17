@@ -3,7 +3,7 @@
   min-height: 50px;
   margin-top: 32px;
   background: none;
-  background-image: url('/images/profile-add-button.svg');
+  background-image: url('../../../images/profile-add-button.svg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 16px 16px;
