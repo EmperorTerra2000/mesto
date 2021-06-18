@@ -10,7 +10,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-overflow: ellipsis;
-  max-width: 290px;
+  max-width: 210px;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -20,6 +20,5 @@
     text-align: left;
     font-size: 18px;
     line-height: 22px;
-    margin-top: 8px;
   }
 }
