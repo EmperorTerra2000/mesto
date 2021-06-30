@@ -46,12 +46,19 @@ initialCards.forEach((item) => {
   renderItem(item.name, item.link);
 });
 
+function setEventListeners(itemElement){
+  itemElement.querySelector('.element__trash').addEventListener('click', handleDelete);
+}
+
 function renderItem(text, srcImg){
   const itemElement = elementTemplateContent.cloneNode(true);
   const itemTextElement = itemElement.querySelector('.element__text');
   const itemImageElement = itemElement.querySelector('.element__image');
   itemTextElement.textContent = text;
   itemImageElement.src = srcImg;
+
+  setEventListeners(itemElement);
+
   listElement.prepend(itemElement);
 }
 
@@ -79,6 +86,11 @@ function formSubmitProfile(evt){
   profileName.textContent = popupName.value;
   profileDuty.textContent = popupDuty.value;
   closePopup();
+}
+
+function handleDelete(event){
+  const itemElement = event.target.closest('.element');
+  itemElement.remove();
 }
 
 function formSubmitAddMesto(evt){
