@@ -25,7 +25,16 @@
             <button class="profile__add-btn page__hover" type="button"></button>
           </section>
           <section class="elements elements_spacing_top content__section">
-            <article class="element">
+            <template id="element-template">
+              <article class="element">
+                <img class="element__image" src="" alt="">
+                <div class="element__item">
+                  <h2 class="element__text"></h2>
+                  <button class="element__like" type="button" aria-label="поставить лайк"></button>
+                </div>
+              </article>
+            </template>
+            <!-- <article class="element">
               <img class="element__image" src="./images/element-yakutia.jpg" alt="Якутия">
               <div class="element__item">
                 <h2 class="element__text">Якутия</h2>
@@ -66,13 +75,13 @@
                 <h2 class="element__text">Ленские столбы</h2>
                 <button class="element__like" type="button" aria-label="поставить лайк"></button>
               </div>
-            </article>
+            </article> -->
           </section>
         </main>
         <footer class="footer">
           <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
         </footer>
-        <div class="popup">
+        <div class="popup popup_type_profile">
           <div class="popup__container">
             <button class="popup__close page__hover" type="button"></button>
             <form class="popup__content" name="editProfile">
@@ -80,6 +89,17 @@
               <input type="text" value="Жак-Ив Кусто" name="popupName" class="popup__input popup__input_value_name">
               <input type="text" value="Исследователь океана" name="popupDuty" class="popup__input popup__input_value_duty">
               <button class="popup__btn-save page__hover" type="submit">Сохранить</button>
+            </form>
+          </div>
+        </div>
+        <div class="popup popup_type_addMesto">
+          <div class="popup__container">
+            <button class="popup__close page__hover" type="button"></button>
+            <form class="popup__content" name="editProfile">
+              <h2 class="popup__title">Новое место</h2>
+              <input type="text" name="popupPlace" class="popup__input popup__input_value_place" placeholder="Название">
+              <input type="text" name="popupLink" class="popup__input popup__input_value_link" placeholder="Ссылка на картинку">
+              <button class="popup__btn-save page__hover" type="submit">Создать</button>
             </form>
           </div>
         </div>
