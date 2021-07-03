@@ -37,6 +37,7 @@
 @import url('../blocks/element/__item/element__item.css');
 @import url('../blocks/element/__text/element__text.css');
 @import url('../blocks/element/__like/element__like.css');
+@import url('../blocks/element/__like/_active/element__like_active.css');
 /*
 #################################
     стили для footer
@@ -57,3 +58,7 @@
 @import url('../blocks/popup/__btn-save/popup__btn-save.css');
 @import url('../blocks/popup/__close/popup__close.css');
 @import url('../blocks/popup/_active/popup_active.css');
+@import url('../blocks/popup/__container/_type/popup__container_type_zoom-img.css');
+@import url('../blocks/popup/__image/popup__image.css');
+@import url('../blocks/popup/__item/popup__item.css');
+@import url('../blocks/popup/__text/popup__text.css');
