@@ -1,35 +1,8 @@
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
 const popupElementProfile = document.querySelector('.popup_type_profile');
 const popupZoomImage = document.querySelector('.popup_type_zoom-image');
 const elementTemplateContent = document.querySelector('#element-template').content;
 const listElement = document.querySelector('.elements');
-const popupElementAddMesto = document.querySelector('.popup_type_addMesto');
+const popupElementAddMesto = document.querySelector('.popup_type_add-place');
 const formElementProfile = popupElementProfile.querySelector('.popup__content');
 const formElementAddMesto = popupElementAddMesto.querySelector('.popup__content');
 const popupClose = document.querySelectorAll('.popup__close');
@@ -42,20 +15,20 @@ const popupLink = popupElementAddMesto.querySelector('.popup__input_value_link')
 const profileName = document.querySelector('.profile__name');
 const profileDuty = document.querySelector('.profile__duty');
 
-
 initialCards.forEach((item) => {
-  renderItem(item.name, item.link);
+  renderCard(item);
 });
 
 //фунцкия, в котором собраны все обработчики событий, связанные с карточкой
-function setEventListeners(itemElement, text){
+function setEventListeners(itemElement, objImg){
   itemElement.querySelector('.element__trash').addEventListener('click', handleDelete);
   itemElement.querySelector('.element__like').addEventListener('click', likeActive);
-  itemElement.querySelector('.element__image').addEventListener('click', (event) => {
+  itemElement.querySelector('.element__image').addEventListener('click', () => {
     const popupZoomImageText = popupZoomImage.querySelector('.popup__text');
-    popupZoomImageText.textContent = text;
-    popupZoomImage.querySelector('.popup__image').src = event.target.src;
-    popupZoomImage.classList.add('popup_active');
+    popupZoomImageText.textContent = objImg.name;
+    popupZoomImage.querySelector('.popup__image').src = objImg.link;
+    popupZoomImage.querySelector('.popup__image').alt = objImg.name;
+    openPopup(popupZoomImage);
   });
 }
 
@@ -70,37 +43,33 @@ function likeActive(event){
   event.target.classList.toggle('element__like_active');
 }
 
-//функия генерации карточек
-function renderItem(text, srcImg){
+//функция создания карточки
+function createCard(objImg){
   const itemElement = elementTemplateContent.cloneNode(true);
   const itemTextElement = itemElement.querySelector('.element__text');
   const itemImageElement = itemElement.querySelector('.element__image');
-  itemTextElement.textContent = text;
-  itemImageElement.src = srcImg;
-  itemImageElement.alt = text;
+  itemTextElement.textContent = objImg.name;
+  itemImageElement.src = objImg.link;
+  itemImageElement.alt = objImg.name;
 
-  setEventListeners(itemElement, itemTextElement.textContent);
+  setEventListeners(itemElement, objImg);
   
-  listElement.prepend(itemElement);
+  return itemElement;
+}
+
+//функция добавления карточки в контейнер
+function renderCard(item){
+  listElement.prepend(createCard(item));
 }
 
 //функция закрытия попапа при нажатии на крестик
-function closePopup(evt){
-  evt.target.closest('.popup').classList.remove('popup_active');
+function closePopup(popup){
+  popup.classList.remove('popup_active');
 }
 
-//функция открытия попапа Profile
-function openPopupProfile(){
-  popupName.value = profileName.textContent;
-  popupDuty.value = profileDuty.textContent;
-  popupElementProfile.classList.add('popup_active');
-}
-
-//функция открытия попапа addMesto
-function openPopupAddMesto(){
-  popupPlace.value = '';
-  popupLink.value = '';
-  popupElementAddMesto.classList.add('popup_active');
+//открытие попапа
+function openPopup(popup){
+  popup.classList.add('popup_active');
 }
 
 //фунцкия редактирования профиля после нажатия кнопки submit
@@ -108,19 +77,29 @@ function formSubmitProfile(evt){
   evt.preventDefault();
   profileName.textContent = popupName.value;
   profileDuty.textContent = popupDuty.value;
-  popupElementProfile.classList.remove('popup_active'); //закрытие данного попапа
+  closePopup(popupElementProfile);
 }
 
 function formSubmitAddMesto(evt){
   evt.preventDefault();
-  renderItem(popupPlace.value, popupLink.value);
-  popupElementAddMesto.classList.remove('popup_active'); //закрытие данного попапа
+  renderCard({
+    name: popupPlace.value,
+    link: popupLink.value
+  });
+  closePopup(popupElementAddMesto);
 }
 
-popupElementProfile.querySelector('.popup__close').addEventListener('click', closePopup);
-popupElementAddMesto.querySelector('.popup__close').addEventListener('click', closePopup);
-popupZoomImage.querySelector('.popup__close').addEventListener('click', closePopup);
-popupProfileOpen.addEventListener('click', openPopupProfile);
-popupAddMestoOpen.addEventListener('click', openPopupAddMesto);
+popupElementProfile.querySelector('.popup__close').addEventListener('click', () => closePopup(popupElementProfile));
+popupElementAddMesto.querySelector('.popup__close').addEventListener('click', () => closePopup(popupElementAddMesto));
+popupZoomImage.querySelector('.popup__close').addEventListener('click', () => closePopup(popupZoomImage));
+popupProfileOpen.addEventListener('click', () => {
+  popupName.value = profileName.textContent;
+  popupDuty.value = profileDuty.textContent;
+  openPopup(popupElementProfile);
+});
+popupAddMestoOpen.addEventListener('click', () => {
+  formElementAddMesto.reset();
+  openPopup(popupElementAddMesto);
+});
 formElementProfile.addEventListener('submit', formSubmitProfile);
 formElementAddMesto.addEventListener('submit', formSubmitAddMesto);
