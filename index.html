@@ -43,10 +43,16 @@
         <div class="popup popup_type_profile">
           <div class="popup__container">
             <button class="popup__close page__hover" type="button"></button>
-            <form class="popup__content" name="editProfile">
+            <form class="popup__content form" name="editProfile" novalidate>
               <h2 class="popup__title">Редактировать профиль</h2>
-              <input type="text" value="Жак-Ив Кусто" name="popupName" class="popup__input popup__input_value_name">
-              <input type="text" value="Исследователь океана" name="popupDuty" class="popup__input popup__input_value_duty">
+              <section class="popup__section">
+                <input type="text" value="Жак-Ив Кусто" name="popupName" class="popup__input popup__input_value_name" id="name-input" minlength="2" maxlength="40" required>
+                <span class="popup__input-error" id="name-input-error"></span>
+              </section>
+              <section class="popup__section popup__section_spacing_top">
+                <input type="text" value="Исследователь океана" name="popupDuty" class="popup__input popup__input_value_duty" id="duty-input" minlength="2" maxlength="200" required>
+                <span class="popup__input-error" id="duty-input-error"></span>
+              </section>
               <button class="popup__btn-save page__hover" type="submit">Сохранить</button>
             </form>
           </div>
@@ -54,10 +60,16 @@
         <div class="popup popup_type_add-place">
           <div class="popup__container">
             <button class="popup__close page__hover" type="button"></button>
-            <form class="popup__content" name="editProfile">
+            <form class="popup__content form" name="editProfile">
               <h2 class="popup__title">Новое место</h2>
-              <input type="text" name="popupPlace" class="popup__input popup__input_value_place" placeholder="Название">
-              <input type="text" name="popupLink" class="popup__input popup__input_value_link" placeholder="Ссылка на картинку">
+              <section class="popup__section">
+                <input type="text" name="popupPlace" class="popup__input popup__input_value_place" id="place-input" placeholder="Название" minlength="2" maxlength="30" required>
+                <span class="popup__input-error" id="place-input-error"></span>
+              </section>
+              <section class="popup__section popup__section_spacing_top">
+                <input type="url" name="popupLink" class="popup__input popup__input_value_link" id="link-input" placeholder="Ссылка на картинку" required>
+                <span class="popup__input-error" id="link-input-error"></span>
+              </section>
               <button class="popup__btn-save page__hover" type="submit">Создать</button>
             </form>
           </div>
@@ -72,7 +84,8 @@
           </div>
         </div>
       </div>
-      <script src="scripts/initial-cards.js"></script>
+      <script src="./scripts/validate.js"></script>
+      <script src="./scripts/initial-cards.js"></script>
       <script src="./scripts/index.js"></script>
     </body>
  </html>

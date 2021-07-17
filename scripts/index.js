@@ -89,6 +89,26 @@ function formSubmitAddMesto(evt){
   closePopup(popupElementAddMesto);
 }
 
+//закрытие попапа при нажатии на оверлей
+function overlayClosePopup(event, popup){
+  if(event.target !== event.currentTarget) return;
+  closePopup(popup);
+}
+
+//закрытие попапа при нажатии на escape
+function keyHandler(event){
+  if(event.key == 'Escape'){
+    closePopup(event.currentTarget.closest('.popup'));
+  }
+}
+
+popupName.addEventListener('keydown', keyHandler);
+popupDuty.addEventListener('keydown', keyHandler);
+popupPlace.addEventListener('keydown', keyHandler);
+popupLink.addEventListener('keydown', keyHandler);
+popupElementProfile.addEventListener('mousedown', (event) => overlayClosePopup(event, popupElementProfile));
+popupElementAddMesto.addEventListener('mousedown', (event) => overlayClosePopup(event, popupElementAddMesto));
+popupZoomImage.addEventListener('mousedown', (event) => overlayClosePopup(event, popupZoomImage));
 popupElementProfile.querySelector('.popup__close').addEventListener('click', () => closePopup(popupElementProfile));
 popupElementAddMesto.querySelector('.popup__close').addEventListener('click', () => closePopup(popupElementAddMesto));
 popupZoomImage.querySelector('.popup__close').addEventListener('click', () => closePopup(popupZoomImage));
