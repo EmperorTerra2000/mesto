@@ -96,16 +96,17 @@ function overlayClosePopup(event, popup){
 }
 
 //закрытие попапа при нажатии на escape
-function keyHandler(event){
-  if(event.key == 'Escape'){
-    closePopup(event.currentTarget.closest('.popup'));
+function keyHandler(event, popup){
+  if(event.key === "Escape"){
+    for(let item in popup){
+      if(popup[item].classList.contains('popup_active')){
+        closePopup(popup[item]);
+      }
+    }
   }
 }
 
-popupName.addEventListener('keydown', keyHandler);
-popupDuty.addEventListener('keydown', keyHandler);
-popupPlace.addEventListener('keydown', keyHandler);
-popupLink.addEventListener('keydown', keyHandler);
+document.addEventListener('keydown', (event) => keyHandler(event, {popupElementProfile, popupElementAddMesto, popupZoomImage}));
 popupElementProfile.addEventListener('mousedown', (event) => overlayClosePopup(event, popupElementProfile));
 popupElementAddMesto.addEventListener('mousedown', (event) => overlayClosePopup(event, popupElementAddMesto));
 popupZoomImage.addEventListener('mousedown', (event) => overlayClosePopup(event, popupZoomImage));
