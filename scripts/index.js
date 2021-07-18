@@ -89,8 +89,13 @@ function handleCardFormSubmit(evt){
     link: popupLink.value
   });
   closePopup(popupElementAddMesto);
-  popupElementAddMesto.querySelector('.popup__btn-save').setAttribute('disabled', true);
-  popupElementAddMesto.querySelector('.popup__btn-save').classList.add('popup__btn-save_type_error');
+
+  formElementAddMesto.reset();
+  const inputList = Array.from([popupPlace, popupLink]);
+  const btnElement = popupElementAddMesto.querySelector('.popup__btn-save');
+  const inactiveButtonClass = 'popup__btn-save_type_error';
+
+  toggleButtonState(inputList, btnElement, inactiveButtonClass);
 }
 
 //закрытие попапа при нажатии на оверлей
@@ -101,22 +106,24 @@ function closeOverlayPopup(event, popup){
 
 //добавление обработчика при открытии попапа
 function addEventListenerKey(){
-  document.addEventListener('keydown', (event) => closeKeyHandler(event, {popupElementProfile, popupElementAddMesto, popupZoomImage}));
+  document.addEventListener('keydown', closeKeyHandler);
 }
 
 //удаление обработчика при закрытии попапа
 function removeEventListenerKey(){
-  document.removeEventListener('keydown', (event) => closeKeyHandler(event, {popupElementProfile, popupElementAddMesto, popupZoomImage}));
+  document.removeEventListener('keydown', closeKeyHandler);
 }
 
 //закрытие попапа при нажатии на escape
-function closeKeyHandler(event, popup){
+function closeKeyHandler(event){
   if(event.key === "Escape"){
-    for(let item in popup){
-      if(popup[item].classList.contains('popup_active')){
-        closePopup(popup[item]);
+    const popupList = Array.from(document.querySelectorAll('.popup'));
+
+    popupList.forEach((popupElement) => {
+      if(popupElement.classList.contains('popup_active')){
+        closePopup(popupElement);
       }
-    }
+    });
   }
 }
 
