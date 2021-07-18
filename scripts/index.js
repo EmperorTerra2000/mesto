@@ -22,7 +22,7 @@ initialCards.forEach((item) => {
 //фунцкия, в котором собраны все обработчики событий, связанные с карточкой
 function setEventListeners(itemElement, objImg){
   itemElement.querySelector('.element__trash').addEventListener('click', handleDelete);
-  itemElement.querySelector('.element__like').addEventListener('click', likeActive);
+  itemElement.querySelector('.element__like').addEventListener('click', handleLikeActive);
   itemElement.querySelector('.element__image').addEventListener('click', () => {
     const popupZoomImageText = popupZoomImage.querySelector('.popup__text');
     popupZoomImageText.textContent = objImg.name;
@@ -39,7 +39,7 @@ function handleDelete(event){
 }
 
 //функция добавления лайка
-function likeActive(event){
+function handleLikeActive(event){
   event.target.classList.toggle('element__like_active');
 }
 
@@ -65,34 +65,48 @@ function renderCard(item){
 //функция закрытия попапа при нажатии на крестик
 function closePopup(popup){
   popup.classList.remove('popup_active');
+  removeEventListenerKey();
 }
 
 //открытие попапа
 function openPopup(popup){
   popup.classList.add('popup_active');
+  addEventListenerKey();
 }
 
 //фунцкия редактирования профиля после нажатия кнопки submit
-function eventSubmitProfile(evt){
+function handleProfileFormSubmit(evt){
   evt.preventDefault();
   profileName.textContent = popupName.value;
   profileDuty.textContent = popupDuty.value;
   closePopup(popupElementProfile);
 }
 
-function eventSubmitAddMesto(evt){
+function handleCardFormSubmit(evt){
   evt.preventDefault();
   renderCard({
     name: popupPlace.value,
     link: popupLink.value
   });
   closePopup(popupElementAddMesto);
+  popupElementAddMesto.querySelector('.popup__btn-save').setAttribute('disabled', true);
+  popupElementAddMesto.querySelector('.popup__btn-save').classList.add('popup__btn-save_type_error');
 }
 
 //закрытие попапа при нажатии на оверлей
 function closeOverlayPopup(event, popup){
   if(event.target !== event.currentTarget) return;
   closePopup(popup);
+}
+
+//добавление обработчика при открытии попапа
+function addEventListenerKey(){
+  document.addEventListener('keydown', (event) => closeKeyHandler(event, {popupElementProfile, popupElementAddMesto, popupZoomImage}));
+}
+
+//удаление обработчика при закрытии попапа
+function removeEventListenerKey(){
+  document.removeEventListener('keydown', (event) => closeKeyHandler(event, {popupElementProfile, popupElementAddMesto, popupZoomImage}));
 }
 
 //закрытие попапа при нажатии на escape
@@ -106,7 +120,6 @@ function closeKeyHandler(event, popup){
   }
 }
 
-document.addEventListener('keydown', (event) => closeKeyHandler(event, {popupElementProfile, popupElementAddMesto, popupZoomImage}));
 popupElementProfile.addEventListener('mousedown', (event) => closeOverlayPopup(event, popupElementProfile));
 popupElementAddMesto.addEventListener('mousedown', (event) => closeOverlayPopup(event, popupElementAddMesto));
 popupZoomImage.addEventListener('mousedown', (event) => closeOverlayPopup(event, popupZoomImage));
@@ -122,5 +135,5 @@ popupAddMestoOpen.addEventListener('click', () => {
   formElementAddMesto.reset();
   openPopup(popupElementAddMesto);
 });
-formElementProfile.addEventListener('submit', eventSubmitProfile);
-formElementAddMesto.addEventListener('submit', eventSubmitAddMesto);
+formElementProfile.addEventListener('submit', handleProfileFormSubmit);
+formElementAddMesto.addEventListener('submit', handleCardFormSubmit);

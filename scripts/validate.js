@@ -38,12 +38,12 @@ function checkInputValidity(formElement, inputElement, inputErrorClass, errorCla
 }
 
 function setEventListeners(formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass){
+  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+  const btnElement = formElement.querySelector(submitButtonSelector);
+
   formElement.addEventListener('submit', (event) => {
     event.preventDefault();
   });
-
-  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
-  const btnElement = formElement.querySelector(submitButtonSelector);
 
   toggleButtonState(inputList, btnElement, inactiveButtonClass);
 
