@@ -73,14 +73,14 @@ function openPopup(popup){
 }
 
 //фунцкия редактирования профиля после нажатия кнопки submit
-function formSubmitProfile(evt){
+function eventSubmitProfile(evt){
   evt.preventDefault();
   profileName.textContent = popupName.value;
   profileDuty.textContent = popupDuty.value;
   closePopup(popupElementProfile);
 }
 
-function formSubmitAddMesto(evt){
+function eventSubmitAddMesto(evt){
   evt.preventDefault();
   renderCard({
     name: popupPlace.value,
@@ -90,13 +90,13 @@ function formSubmitAddMesto(evt){
 }
 
 //закрытие попапа при нажатии на оверлей
-function overlayClosePopup(event, popup){
+function closeOverlayPopup(event, popup){
   if(event.target !== event.currentTarget) return;
   closePopup(popup);
 }
 
 //закрытие попапа при нажатии на escape
-function keyHandler(event, popup){
+function closeKeyHandler(event, popup){
   if(event.key === "Escape"){
     for(let item in popup){
       if(popup[item].classList.contains('popup_active')){
@@ -106,10 +106,10 @@ function keyHandler(event, popup){
   }
 }
 
-document.addEventListener('keydown', (event) => keyHandler(event, {popupElementProfile, popupElementAddMesto, popupZoomImage}));
-popupElementProfile.addEventListener('mousedown', (event) => overlayClosePopup(event, popupElementProfile));
-popupElementAddMesto.addEventListener('mousedown', (event) => overlayClosePopup(event, popupElementAddMesto));
-popupZoomImage.addEventListener('mousedown', (event) => overlayClosePopup(event, popupZoomImage));
+document.addEventListener('keydown', (event) => closeKeyHandler(event, {popupElementProfile, popupElementAddMesto, popupZoomImage}));
+popupElementProfile.addEventListener('mousedown', (event) => closeOverlayPopup(event, popupElementProfile));
+popupElementAddMesto.addEventListener('mousedown', (event) => closeOverlayPopup(event, popupElementAddMesto));
+popupZoomImage.addEventListener('mousedown', (event) => closeOverlayPopup(event, popupZoomImage));
 popupElementProfile.querySelector('.popup__close').addEventListener('click', () => closePopup(popupElementProfile));
 popupElementAddMesto.querySelector('.popup__close').addEventListener('click', () => closePopup(popupElementAddMesto));
 popupZoomImage.querySelector('.popup__close').addEventListener('click', () => closePopup(popupZoomImage));
@@ -122,5 +122,5 @@ popupAddMestoOpen.addEventListener('click', () => {
   formElementAddMesto.reset();
   openPopup(popupElementAddMesto);
 });
-formElementProfile.addEventListener('submit', formSubmitProfile);
-formElementAddMesto.addEventListener('submit', formSubmitAddMesto);
+formElementProfile.addEventListener('submit', eventSubmitProfile);
+formElementAddMesto.addEventListener('submit', eventSubmitAddMesto);
