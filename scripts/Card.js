@@ -26,11 +26,14 @@ export default class Card{
     //Запишем разметку в приватное поле _element. 
     //Так у других элементов появится доступ к ней.
     this._element = this._getTemplate();
+    this._cardImg = this._element.querySelector('.element__image');
+    this._cardText = this._element.querySelector('.element__text');
     this._setEventListeners();//подключаем слушатели привязанные к карточкам
 
     //добавим данные
-    this._element.querySelector('.element__image').src = this._link;
-    this._element.querySelector('.element__text').textContent = this._name;
+    this._cardImg.src = this._link;
+    this._cardImg.alt = this._name;
+    this._cardText.textContent = this._name;
 
     //вернем элемент наружу
     return this._element;
@@ -44,7 +47,7 @@ export default class Card{
     this._element.querySelector('.element__trash').addEventListener('click', (event) => {
       this._handleDelete(event);
     });
-    this._element.querySelector('.element__image').addEventListener('click', () => {
+    this._cardImg.addEventListener('click', () => {
       this._handleCardClick(this._name, this._link);
     });
   }

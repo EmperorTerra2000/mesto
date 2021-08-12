@@ -12,6 +12,12 @@ const popupPlace = popupElementAddMesto.querySelector('.popup__input_value_place
 const popupLink = popupElementAddMesto.querySelector('.popup__input_value_link');
 const profileName = document.querySelector('.profile__name');
 const profileDuty = document.querySelector('.profile__duty');
+const popupZoomImageText = popupZoomImage.querySelector('.popup__text');
+const popupZoomImageImg = popupZoomImage.querySelector('.popup__image');
+const popupCloseProfile = popupElementProfile.querySelector('.popup__close');
+const popupCloseAddMesto = popupElementAddMesto.querySelector('.popup__close');
+const popupCloseZoomImg = popupZoomImage.querySelector('.popup__close');
 
 export {popupElementProfile,popupZoomImage,listElement,popupElementAddMesto,formElementProfile,formElementAddMesto,
-  popupProfileOpen,popupAddMestoOpen,popupName,popupDuty,popupPlace,popupLink,profileName,profileDuty};
+  popupProfileOpen,popupAddMestoOpen,popupName,popupDuty,popupPlace,popupLink,profileName,profileDuty,
+  popupZoomImageText,popupZoomImageImg,popupCloseProfile,popupCloseAddMesto,popupCloseZoomImg};
