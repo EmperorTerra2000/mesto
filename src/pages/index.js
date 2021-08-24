@@ -1,15 +1,19 @@
 import './index.css';//путь к стилям для вебпака
 
 import initialCards from '../utils/initial-cards.js'; //массив данных изначальных карточек
-import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import {popupElementProfile,listElement,popupElementAddMesto,
   popupProfileOpen,popupAddMestoOpen,popupName,popupDuty,profileName,profileDuty,
   formSettings,formSlctrEditProfile,formSlctrAddMesto} from '../utils/Contants.js';
-import Section from '../components/Section.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
-import { handleCardClick } from '../utils/utils.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import { handleCardClick, createCard, createSection} from '../utils/utils.js';
+
+/* Найденные DOM элементы не являются константами т.к. ищутся на странице во время выполнения скрипта.
+Тем более в проекте могут быть другие страницы, помимо index.html, и на этих страницах таких элементов может не быть,
+но они все равно будут искаться.Не нужно их размещать в файле constants.js, следует перенести в index.js. */
+const popupElementZoomImage = document.querySelector('.popup_type_zoom-image');
 
 //валидация форм
 const formValidatorProfile = new FormValidator(formSettings, formSlctrEditProfile);
@@ -20,21 +24,19 @@ const formValidatorAddCard = new FormValidator(formSettings, formSlctrAddMesto);
 
 formValidatorAddCard.enableValidation();
 
+//экземпляр класса, отвечающий за контент profile
 const profileUser = new UserInfo({name: profileName, duty: profileDuty});
-
+//открывает модальное окно при нажатии на img карточки
+export const popupZoomImage = new PopupWithImage(popupElementZoomImage);
+//экземпляр класса, отвечающий за добавление карточек в разметку
+const cardListAdd = createSection({items: '', renderer: () => {}}, listElement);
 //создание экземпляров на основе класса PopupWithForm
 const popupFormAddMesto = new PopupWithForm({
   handleFormSubmit: (formData) => {
-    //при создании экземпляра Section передаём ему объект с данными формы
-    const cardList = new Section({items: formData, renderer: (item) => {
-      const card = new Card(item, '#element-template', handleCardClick);
-    
-      const cardElement = card.generateCard();
-    
-      cardList.addItem(cardElement);
-    }}, listElement);
-    
-    cardList.renderItems();
+    const card = createCard(formData, '#element-template', handleCardClick);
+    const cardElement = card.generateCard();
+
+    cardListAdd.addItem(cardElement);
   }
 }, popupElementAddMesto);
 
@@ -44,8 +46,8 @@ const popupFormProfile = new PopupWithForm({
   }
 }, popupElementProfile);
 
-const cardList = new Section({items: initialCards, renderer: (item) => {
-  const card = new Card(item, '#element-template', handleCardClick);
+const cardList = createSection({items: initialCards, renderer: (item) => {
+  const card = createCard(item, '#element-template', handleCardClick);
 
   const cardElement = card.generateCard();
 
@@ -55,8 +57,9 @@ const cardList = new Section({items: initialCards, renderer: (item) => {
 cardList.renderItems();
 
 popupProfileOpen.addEventListener('click', () => {
-  popupName.value = profileUser.getUserInfo().name;
-  popupDuty.value = profileUser.getUserInfo().duty;
+  const userInfo = profileUser.getUserInfo();
+  popupName.value = userInfo.name;
+  popupDuty.value = userInfo.duty;
   
   formValidatorProfile.removeErrorText();
   popupFormProfile.open();

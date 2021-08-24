@@ -1,5 +1,4 @@
 const popupElementProfile = document.querySelector('.popup_type_profile');
-const popupElementZoomImage = document.querySelector('.popup_type_zoom-image');
 const listElement = document.querySelector('.elements');
 const popupElementAddMesto = document.querySelector('.popup_type_add-place');
 const popupProfileOpen = document.querySelector('.profile__edit-btn');
@@ -19,6 +18,6 @@ const formSettings = {
 const formSlctrEditProfile = '.form_type_editProfile';
 const formSlctrAddMesto = '.form_type_addMesto';
 
-export {popupElementProfile,popupElementZoomImage,listElement,popupElementAddMesto,
+export {popupElementProfile,listElement,popupElementAddMesto,
   popupProfileOpen,popupAddMestoOpen,popupName,popupDuty,profileName,profileDuty,formSettings,
   formSlctrEditProfile, formSlctrAddMesto};
