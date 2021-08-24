@@ -6,7 +6,6 @@ import { popupZoomImage } from '../pages/index.js';
 //для того чтобы при нажатии на img карточки, выскочил попап
 export function handleCardClick(name, link){
   popupZoomImage.open(name, link);
-  popupZoomImage.setEventListeners();
 }
 export function createCard(item, templateSelector, handleMethod){
   return new Card(item, templateSelector, handleMethod);

@@ -28,24 +28,8 @@ formValidatorAddCard.enableValidation();
 const profileUser = new UserInfo({name: profileName, duty: profileDuty});
 //открывает модальное окно при нажатии на img карточки
 export const popupZoomImage = new PopupWithImage(popupElementZoomImage);
+popupZoomImage.setEventListeners();
 //экземпляр класса, отвечающий за добавление карточек в разметку
-const cardListAdd = createSection({items: '', renderer: () => {}}, listElement);
-//создание экземпляров на основе класса PopupWithForm
-const popupFormAddMesto = new PopupWithForm({
-  handleFormSubmit: (formData) => {
-    const card = createCard(formData, '#element-template', handleCardClick);
-    const cardElement = card.generateCard();
-
-    cardListAdd.addItem(cardElement);
-  }
-}, popupElementAddMesto);
-
-const popupFormProfile = new PopupWithForm({
-  handleFormSubmit: (formData) => {
-    profileUser.setUserInfo(formData.name, formData.duty);
-  }
-}, popupElementProfile);
-
 const cardList = createSection({items: initialCards, renderer: (item) => {
   const card = createCard(item, '#element-template', handleCardClick);
 
@@ -55,6 +39,21 @@ const cardList = createSection({items: initialCards, renderer: (item) => {
 }}, listElement);
 
 cardList.renderItems();
+//создание экземпляров на основе класса PopupWithForm
+const popupFormAddMesto = new PopupWithForm({
+  handleFormSubmit: (formData) => {
+    const card = createCard(formData, '#element-template', handleCardClick);
+    const cardElement = card.generateCard();
+
+    cardList.addItem(cardElement);
+  }
+}, popupElementAddMesto);
+
+const popupFormProfile = new PopupWithForm({
+  handleFormSubmit: (formData) => {
+    profileUser.setUserInfo(formData.name, formData.duty);
+  }
+}, popupElementProfile);
 
 popupProfileOpen.addEventListener('click', () => {
   const userInfo = profileUser.getUserInfo();
