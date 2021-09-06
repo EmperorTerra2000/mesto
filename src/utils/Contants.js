@@ -1,6 +1,8 @@
 const popupElementProfile = document.querySelector('.popup_type_profile');
 const listElement = document.querySelector('.elements');
 const popupElementAddMesto = document.querySelector('.popup_type_add-place');
+const popupElementDeleteCard = document.querySelector('.popup_type_delete-card');
+const popupElementChangeAvatar = document.querySelector('.popup_type_change-avatar');
 const popupProfileOpen = document.querySelector('.profile__edit-btn');
 const popupAddMestoOpen = document.querySelector('.profile__add-btn');
 const popupName = popupElementProfile.querySelector('.popup__input_value_name');
@@ -17,7 +19,9 @@ const formSettings = {
 }//объект со списком конфигураций для валидации полей форм
 const formSlctrEditProfile = '.form_type_editProfile';
 const formSlctrAddMesto = '.form_type_addMesto';
+const formSlctrChangeAvatar = '.form_type_change-avatar';
 
 export {popupElementProfile,listElement,popupElementAddMesto,
   popupProfileOpen,popupAddMestoOpen,popupName,popupDuty,profileName,profileDuty,formSettings,
-  formSlctrEditProfile, formSlctrAddMesto};
+  formSlctrEditProfile, formSlctrAddMesto, popupElementDeleteCard, popupElementChangeAvatar, 
+  formSlctrChangeAvatar};

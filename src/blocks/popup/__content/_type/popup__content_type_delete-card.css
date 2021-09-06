@@ -1,0 +1,5 @@
+@media screen and (min-width: 768px) {
+  .popup__content_type_delete-card {
+    padding: 34px 36px 30px 36px;
+  }
+}

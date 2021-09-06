@@ -1,7 +1,7 @@
 export default class Popup{
   constructor(popup){
     this._popup = popup;
-    this._handleEscClose = this._handleEscClose.bind(this); //использование ксенотехнологий, использование которых является ересью
+    this._handleEscClose = this._handleEscClose.bind(this); //использование ксенотехнологий, использование которых считается ересью
   }
 
   open(){

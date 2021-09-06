@@ -1,0 +1,18 @@
+.profile__block-avatar {
+  width: 100%;
+  cursor: pointer;
+}
+.profile__block-avatar:hover::before {
+  content: '';
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 1;
+  background-image: url('../../../images/profile-edit-button.svg');
+  background-size: 26px 26px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
