@@ -4,7 +4,7 @@ export default class Card{
   _cardSelector
   _handleCardClick
 
-  constructor({name, link, likes, _id, owner}, {handleCardClick, handleOpenPopupDelete, api, userId}, cardSelector){
+  constructor({name, link, likes, _id, owner}, {handleCardClick, handleOpenPopupDelete, handleLikeActive, userId}, cardSelector){
     this._name = name;
     this._link = link;
     this._likes = likes;
@@ -14,7 +14,7 @@ export default class Card{
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
     this._handleOpenPopupDelete = handleOpenPopupDelete;
-    this._api = api;
+    this._handleLikeActive = handleLikeActive;
   }
 
   _getTemplate(){
@@ -54,7 +54,7 @@ export default class Card{
 
   //проверка наличия лайка после обновления страницы, и добавления класса element__like_active, если лайк присутствует
   _checkLike(){
-    this._api.getUserInfo();
+    // this._api.getUserInfo();
     const check = this._likes.some(element => {
       return element._id == this._userId;
     });
@@ -79,26 +79,5 @@ export default class Card{
     this._cardImg.addEventListener('click', () => {
       this._handleCardClick(this._name, this._link);
     });
-  }
-
-  //функция добавления лайка
-  _handleLikeActive(event){
-    if(!event.target.classList.contains('element__like_active')){
-      this._api.clickLike(this._cardId)
-        .then(data => {
-          // console.log(data);
-          // console.log(this._userId);
-          event.target.classList.add('element__like_active');
-          this._numberLikes.textContent = data.likes.length;
-        });
-    }
-    else {
-      this._api.deleteLike(this._cardId)
-        .then(data => {
-          // console.log(data);
-          event.target.classList.remove('element__like_active');
-          this._numberLikes.textContent = data.likes.length;
-        });
-    }
   }
 }

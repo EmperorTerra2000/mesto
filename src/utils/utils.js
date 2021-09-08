@@ -7,11 +7,11 @@ import { popupZoomImage } from '../pages/index.js';
 export function handleCardClick(name, link){
   popupZoomImage.open(name, link);
 }
-export function createCard(item, handleClickImg, handleOpenPopup, api, userId, templateSelector){
+export function createCard(item, handleClickImg, handleOpenPopup, handleLikeActive, userId, templateSelector){
   return new Card(item,{
     handleCardClick: handleClickImg,
     handleOpenPopupDelete: handleOpenPopup,
-    api: api,
+    handleLikeActive: handleLikeActive,
     userId: userId,
   }, templateSelector);
 }

@@ -1,6 +1,5 @@
 export default class Section {
-  constructor({items, renderer}, containerSelector){
-    this._renderedItems = items;
+  constructor({renderer}, containerSelector){
     this._renderer = renderer;
     this._container = containerSelector;
   }
@@ -11,12 +10,12 @@ export default class Section {
   }
 
   //метод, отвечающий за отрисовку элементов через renderer
-  renderItems(){
-    if(Array.isArray(this._renderedItems)){
-      this._renderedItems.forEach(item => this._renderer(item));
+  renderItems(data){
+    if(Array.isArray(data)){
+      data.forEach(item => this._renderer(item));
     }
-    else if(typeof(this._renderedItems) === 'object'){
-      this._renderer(this._renderedItems);
+    else if(typeof(data) === 'object'){
+      this._renderer(data);
     }
   }
 }

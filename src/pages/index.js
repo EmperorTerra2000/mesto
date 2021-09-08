@@ -28,7 +28,9 @@ const popupFormAvatar = new PopupWithForm({
         // console.log(data);
         avatarElement.src = data.avatar;
       })
+      .catch(err => console.log(err))
       .finally(() => {
+        popupFormAvatar.close();
         popupFormAvatar.renderLoading('Сохранить');
       });
   }
@@ -70,14 +72,28 @@ const popupFormAddMesto = new PopupWithForm({
 
     api.addCard(formData)
       .then(data => {
-        const card = createCard(data, handleCardClick, handleOpenPopupDelete, api, userId, '#element-template');
+        const card = createCard(data, handleCardClick, handleOpenPopupDelete, handleLikeActive, userId, '#element-template');
         const cardElement = card.generateCard();
     
-        listElement.prepend(cardElement);
+        cardList.addItem(cardElement);
       })
-      .finally(() => popupFormAddMesto.renderLoading('Создать'));
+      .catch(err => console.log(err))
+      .finally(() => {
+        popupFormAddMesto.close();
+        popupFormAddMesto.renderLoading('Создать')
+      });
   }
 }, popupElementAddMesto);
+
+//экземпляр, отвечающий за разметку карточек на странице
+const cardList = createSection({
+  renderer: (item) => {  
+    const card = createCard(item, handleCardClick, handleOpenPopupDelete, handleLikeActive, userId, '#element-template');
+    const cardElement = card.generateCard();
+  
+    cardList.addItem(cardElement);
+  }
+}, listElement);
 
 //экземпляр попапа удаления карточки
 const popupDeleteCard = new PopupWithDeleteCard({
@@ -89,11 +105,34 @@ const popupDeleteCard = new PopupWithDeleteCard({
         evt.target.closest('.element').remove();
         popupDeleteCard.close();
       })
+      .catch(err => console.log(err))
       .finally(() => popupDeleteCard.renderLoading('Да'));
   }
 }, popupElementDeleteCard);
 
 popupDeleteCard.setEventListeners();
+
+//функция отклика при нажатии на лайк, ввиде хендлера отправляется на класс Card
+function handleLikeActive(event){
+  if(!event.target.classList.contains('element__like_active')){
+    api.clickLike(this._cardId)
+      .then(data => {
+        event.target.classList.add('element__like_active');
+        this._numberLikes.textContent = data.likes.length;
+      })
+      .catch(err => console.log(err));
+  }
+  else {
+    api.deleteLike(this._cardId)
+      .then(data => {
+        // console.log(data);
+        event.target.classList.remove('element__like_active');
+        this._numberLikes.textContent = data.likes.length;
+      })
+      .catch(err => console.log(err));
+  }
+}
+
 
 //метод вызывается при нажатии на trash элемент карточки, и открывает попап удаления
 function handleOpenPopupDelete(cardId, evt){
@@ -101,6 +140,7 @@ function handleOpenPopupDelete(cardId, evt){
   popupDeleteCard.getCardInfo(cardId, evt)
 }
 
+//попап изменения профиля пользователя
 const popupFormProfile = new PopupWithForm({
   handleFormSubmit: (formData) => {
     popupFormProfile.renderLoading('Сохранение...');
@@ -109,10 +149,15 @@ const popupFormProfile = new PopupWithForm({
       .then((data) => {
         profileUser.setUserInfo(data.name, data.about);
       })
-      .finally(() => popupFormProfile.renderLoading('Сохранить'));
+      .catch(err => console.log(err))
+      .finally(() => {
+        popupFormProfile.close();
+        popupFormProfile.renderLoading('Сохранить');
+      });
   }
 }, popupElementProfile);
 
+//обработчик открытия попапа изменения профиля юзера
 popupProfileOpen.addEventListener('click', () => {
   const userInfo = profileUser.getUserInfo();
   popupName.value = userInfo.name;
@@ -123,6 +168,7 @@ popupProfileOpen.addEventListener('click', () => {
 });
 popupFormProfile.setEventListeners();
 
+//обработчик открытия попапа popupFormAddMesto
 popupAddMestoOpen.addEventListener('click', () => {
   formValidatorAddCard.removeErrorText();
   popupFormAddMesto.open();
@@ -136,22 +182,13 @@ blockAvatarElement.addEventListener('click', () => {
 
 let userId;//хранение id юзера, необходим для того чтобы узнать поставил ли он лайк
 
-api.getUserInfo()
-  .then(data => {
-    avatarElement.src = data.avatar;//вставка аватара из сервера при загрузке страницы
-    profileUser.setUserInfo(data.name, data.about);//вставка профиля юзера из сервера при загрузке страницы
-    userId = data._id;//сомнительный способ присваивания значения (асинхронность все дела...)
-  });
+//обработка сразу двух запросов, при отказе одного из них сработает перехват ошибок catch
+Promise.all([api.getUserInfo(), api.getCardInfo()])
+  .then(result => {
+    avatarElement.src = result[0].avatar;//вставка аватара из сервера при загрузке страницы
+    profileUser.setUserInfo(result[0].name, result[0].about);//вставка профиля юзера из сервера при загрузке страницы
+    userId = result[0]._id;//сомнительный способ присваивания значения (асинхронность все дела...)
 
-api.getCardInfo()
-  .then(data => {
-    const cardList = createSection({items: data.reverse(), renderer: (item) => {
-      const card = createCard(item, handleCardClick, handleOpenPopupDelete, api, userId, '#element-template');
-    
-      const cardElement = card.generateCard();
-    
-      cardList.addItem(cardElement);
-    }}, listElement);
-    
-    cardList.renderItems();
-  });
+    cardList.renderItems(result[1].reverse());//генерация карточек при обновлении страницы
+  })
+  .catch(err => console.log(err));
