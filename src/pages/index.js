@@ -76,10 +76,11 @@ const popupFormAddMesto = new PopupWithForm({
         const cardElement = card.generateCard();
     
         cardList.addItem(cardElement);
+
+        popupFormAddMesto.close();
       })
       .catch(err => console.log(err))
       .finally(() => {
-        popupFormAddMesto.close();
         popupFormAddMesto.renderLoading('Создать')
       });
   }
@@ -148,10 +149,10 @@ const popupFormProfile = new PopupWithForm({
     api.updateInfoUser(formData.name, formData.duty)
       .then((data) => {
         profileUser.setUserInfo(data.name, data.about);
+        popupFormProfile.close();
       })
       .catch(err => console.log(err))
       .finally(() => {
-        popupFormProfile.close();
         popupFormProfile.renderLoading('Сохранить');
       });
   }
